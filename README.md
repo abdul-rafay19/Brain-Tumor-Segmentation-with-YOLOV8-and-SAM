@@ -1,95 +1,69 @@
-# 🧠 Brain Tumor Detection & Segmentation using YOLOv8 + SAM
+# 🧠 Brain Tumor Detection with YOLOv8 + SAM 🔬
 
-This project combines the powerful **YOLOv8** object detection model with Meta AI's **Segment Anything Model (SAM)** to detect and segment brain tumors from MRI scans. It processes medical images to identify tumor regions and generate precise segmentation masks for better analysis.
-
----
-
-## 📌 Highlights
-
-- 🔍 **Multi-object detection** in brain MRI scans using YOLOv8
-- ✂️ **Fine-grained segmentation** of tumors using SAM
-- 📸 **Output generation**: bounding boxes + polygonal masks
-- 🧪 **Based on BraTS 2021 Dataset**
-- ⚡ Can be extended with **Streamlit UI**
+An advanced object detection and segmentation pipeline that leverages **YOLOv8** for tumor localization and **SAM (Segment Anything Model)** for precise mask generation. Developed using PyTorch, OpenCV, and integrated with an optional Streamlit UI for real-time interaction.
 
 ---
 
-## 📁 Project Directory
+## 📌 Overview
 
-```plaintext
-PROJECT ARCH TECHNOLOGIES/
-│
-├── BraTS2021_Training_Data/         # Original MRI brain tumor data
-│   └── (images, segmentations, etc.)
-│
-├── output/                          # Output after YOLO + SAM processing
-│   ├── images/                      # Result images
-│   ├── labels/                      # Bounding box labels
-│   └── masks/                       # Mask polygons
-│
-├── yolo_brain_dataset/             # YOLO training dataset
-│   ├── images/
-│   ├── labels/
-│   └── data.yaml
-│
-├── YOLOV8_SAM/
-│   ├── detect_multi_object_SAM.py   # Main script: YOLO detection + SAM masks
-│   ├── appy.py                      # Streamlit app (optional)
-│   ├── yolov8s.pt                   # Pretrained YOLOv8s model
-│   ├── sam_vit_h_4b8939.pth         # SAM ViT-H checkpoint
-│   ├── test_image.jpg               # Sample test image
-│   ├── test_image2.jpg
-│   ├── test_image3.jpg
-│   ├── output_detection.jpg         # Output with bounding boxes + masks
-│   ├── output_detectio2.jpg
-│   ├── bounding_box_image1.txt      # YOLO bounding boxes
-│   ├── bounding_box_image2.txt
-│   ├── yolo_mask_image1.txt         # SAM masks in YOLO format
-│   ├── yolo_mask_image2.txt
-│   ├── visulise_mask.py             # Visualization utility
-│   └── README.md
-│
-├── yolov8s.pt                       # YOLO model checkpoint
-├── LICENSE
-└── README.md
+This project combines the power of **YOLOv8** (by Ultralytics) and **SAM** (by Meta AI) to detect and segment brain tumors from MRI scans.
 
-# 🧠 Sample MRI Image
-
-**Original brain scan used as input:**
-
-![Sample MRI](![image](https://github.com/user-attachments/assets/b3bde50f-115e-43ea-b43e-99ba0cac3451))
+- 🔍 Detects multiple objects with YOLOv8  
+- 🧠 Generates pixel-accurate tumor masks using SAM  
+- 💾 Outputs bounding box and segmentation coordinates  
+- 📊 Supports general object detection from COCO too  
 
 ---
 
-# 🧪 Sample Detection + Mask Output
+## 🧪 Sample Outputs
 
-**Result after YOLOv8 + SAM processing:**
+### 🎯 Input MRI Scan
 
-![Output Detection]![image](https://github.com/user-attachments/assets/2cc13f20-c441-4764-8cfb-046f79280ecf))
+> Original brain scan used as input:
+
+![Sample Input](![test_image2](https://github.com/user-attachments/assets/577ee8e7-4245-4bbe-bead-410549c36faf))
+
+### ✅ Output: Detected Tumor(s)
+
+> After YOLOv8 detection + SAM segmentation:
+
+![Sample Output](![image](https://github.com/user-attachments/assets/948c1820-8a76-431a-bf71-cf0e66a2b9f8))
 
 ---
 
 ## 🚀 How It Works
 
-- **YOLOv8** detects multiple bounding boxes where tumors are likely present.
-- **SAM** processes each bounding box and returns a detailed segmentation mask.
-- **Masks** are saved as polygon coordinates for visualization and evaluation.
+1. **YOLOv8** detects all bounding boxes of interest (e.g., tumors).  
+2. Each bounding box is passed to **SAM**, which generates a detailed segmentation mask.  
+3. Both bounding boxes and polygonal masks are saved in `.txt` files for further use or annotation.  
 
 ---
 
 ## 🧰 Installation
 
-Clone the repo and install dependencies:
+Clone the repository and install the necessary libraries:
 
 ```bash
 git clone https://github.com/your-username/brain-tumor-yolo-sam.git
 cd brain-tumor-yolo-sam
+```
 
-# Install dependencies
+### 🔧 Install Python Dependencies:
+
+```bash
 pip install torch torchvision torchaudio
 pip install opencv-python
 pip install ultralytics
+pip install git+https://github.com/facebookresearch/segment-anything.git
+```
+
+### ▶️ (Optional) Install Streamlit:
+
+```bash
 pip install streamlit
+```
+
+---
 
 ## 🏃 Run the Project
 
@@ -98,64 +72,76 @@ pip install streamlit
 ```bash
 cd YOLOV8_SAM
 python detect_multi_object_SAM.py
+```
 
-### ➤ (Optional) Run Streamlit App
+### ➤ (Optional) Run Streamlit App:
 
+```bash
 streamlit run appy.py
+```
+
+---
 
 ## 📦 Models Used
 
-| Model      | Description                         | Source              |
-|------------|-------------------------------------|---------------------|
-| YOLOv8s    | Object detection for bounding boxes | Ultralytics YOLOv8 |
-| SAM ViT-H  | Segmentation from bounding boxes    | Meta AI SAM         |
+| Model       | Description                         | Source                   |
+|-------------|-------------------------------------|---------------------------|
+| YOLOv8s     | Object detection for bounding boxes | Ultralytics YOLOv8        |
+| SAM ViT-H   | Segmentation from bounding boxes    | Meta AI Segment Anything  |
 
 ---
 
 ## 📚 Dataset
 
-**BraTS 2021 (Brain Tumor Segmentation Challenge)**  
+- **BraTS 2021**: Brain Tumor Segmentation Challenge  
 - MRI-based brain tumor scans  
-- Converted to YOLO format in `yolo_brain_dataset/`  
-- Segmentation masks extracted and saved in `output/masks/`
+- Converted to YOLOv8 format inside `yolo_brain_dataset/`  
+- Masks saved in `output/masks/`  
 
 ---
 
-## 🔢 Sample Output Files
+## 🔢 Output Files
 
-- `bounding_box_image1.txt` – YOLOv8 bounding boxes for test image  
-- `yolo_mask_image1.txt` – Normalized polygon mask coordinates for the same image  
-- `output_detection.jpg` – Annotated image (box + mask)
+| File Name               | Description                                      |
+|-------------------------|--------------------------------------------------|
+| `bounding_box_image1.txt` | YOLOv8 bounding boxes for test image          |
+| `yolo_mask_image1.txt`    | Normalized mask polygon coordinates           |
+| `output_detection.jpg`    | Annotated image with box + mask overlay       |
 
 ---
 
-## 📷 Tested Sample from COCO
+## 📷 Tested on COCO Too!
 
-Also tested with general objects like this:
+The pipeline also works on general object detection tasks. For example:
 
-- Example YOLO detection class: **Class 74 = book**
+- Detected: **Class 74 = Book**
+
+You can try feeding other images to test its generalizability.
 
 ---
 
 ## 👨‍💻 Developed By
 
 **Abdul Rafay**  
-📚 *BS Software Engineering | 🎯 AI & ML Enthusiast*  
-🔗 [LinkedIn](https://www.linkedin.com/in/abdul-rafay19)  
+📚 BS Software Engineering | 🎯 AI & ML Enthusiast   
+🔗 [LinkedIn](https://www.linkedin.com/in/abdul-rafay19)
 
 ---
 
 ## 📜 License
 
-This repository is released under the **MIT License**.
+This repository is licensed under the **MIT License**.
 
 ---
 
 ## 🌟 Support & Contribution
 
-If you found this project useful:
+If you found this helpful:
 
 - ⭐ Star the repo  
-- 🛠️ Fork and contribute  
-- 📢 Share on LinkedIn and tag me!
+- 🍴 Fork it and contribute  
+- 📢 Share on LinkedIn and tag me!  
 
+---
+
+> 🔍 Accurate detection. 🎯 Precise segmentation. 🚀 Built with passion.
