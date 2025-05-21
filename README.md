@@ -21,7 +21,7 @@ This project combines the power of **YOLOv8** (by Ultralytics) and **SAM** (by M
 
 > Original brain scan used as input:
 
-![Input MRI Scan](https://github.com/user-attachments/assets/577ee8e7-4245-4bbe-bead-410549c36faf)
+![Input MRI Scan](![image](https://github.com/user-attachments/assets/8218c1ab-d176-4173-877c-6e09e56402fc))
 
 ### ✅ Output: Detected Tumor(s)
 
